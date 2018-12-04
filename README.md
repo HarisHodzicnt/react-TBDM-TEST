@@ -1,3 +1,8 @@
+My api: https://api.themoviedb.org/3/movie/{movie_ID}?api_key={api key}&append_to_response=videos
+
+There was problem with firebase and iframe ... so I just left image in details window.
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
