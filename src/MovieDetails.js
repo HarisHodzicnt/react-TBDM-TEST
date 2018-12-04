@@ -15,7 +15,8 @@ import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import $ from 'jquery';
-import { withRouter } from 'react-router'
+import { Player } from 'video-react';
+import { withRouter } from 'react-router';
 
 const styles = theme => ({
 
@@ -26,18 +27,21 @@ const styles = theme => ({
    display:'inline-block'
 
  },
+
 })
 class App extends Component {
   state={
     valueTabs:0,
-    movieDetails:{},
+    movieDetails:{
+      prop:'empty'
+    },
   }
   handleChange = (event, value) => {
     this.setState({ valueTabs:value });
   };
 
 componentWillMount(){
-  const url="https://api.themoviedb.org/3/movie/"+this.props.history.movieId+"?api_key=38a6fb9c67512590950aabe3f677f0ac";
+  const url="https://api.themoviedb.org/3/movie/"+this.props.history.movieId+"?api_key=38a6fb9c67512590950aabe3f677f0ac&append_to_response=videos";
   let details={};
   $.ajax({
     url:url,
@@ -56,9 +60,30 @@ componentWillMount(){
 
     render() {
       const { classes, history } =this.props;
-      let details=this.state.movieDetails;
-      const img="http://image.tmdb.org/t/p/w500"+this.state.movieDetails.poster_path;
+      let img="https://image.tmdb.org/t/p/w500"+this.state.movieDetails.poster_path;
+    /*  if(this.state.movieDetails.prop!=='empty')
+      {
+        this.state.movieDetails.videos.results.forEach((value)=>{
+          if(value.type=='Trailer')
+          {
+            img="http://www.youtube.com/embed/"+value.key;
+            return;
+          }
+        })
+      }
+in case Iframe start working ...
 
+*/
+/*  <CardMedia
+          component="iframe"
+          alt="Contemplative Reptile"
+          className={classes.media}
+          height="540"
+          src={img}
+        />
+
+I DONT KNOW WHY, BUT IFRAME WONT LOAD ON MY https://rubicontest-9250a.firebaseapp.com, BUT IT DOES IN LOCALHOST ..., thats why i comment this
+        */
 return(
       <div className="app">
       <Paper square style={{ width: 500 }}>
@@ -76,13 +101,18 @@ return(
             </Paper>
             <div style={{display:'flex', alignItems:'center', justifyContent:'center', borderTop:'2px solid grey'}}>
             <Card className={classes.card}><CardActionArea >
-              <CardMedia
-                component="img"
-                alt="Contemplative Reptile"
-                className={classes.media}
-                height="540"
-                image={img}
-              />
+				{
+					console.log(img)
+				}
+
+        <CardMedia
+                  component="img"
+                  alt="Contemplative Reptile"
+                  className={classes.media}
+                  height="540"
+                  image={img}
+                />
+
               <CardContent style={{marginTop:20, }}>
                 <Typography gutterBottom variant="h5" align='center' component="h5">
                   {this.state.movieDetails.overview}
